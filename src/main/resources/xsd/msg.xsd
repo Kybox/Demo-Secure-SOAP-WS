@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:model="http://model.ws.kybox.fr"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           targetNamespace="http://msg.ws.kybox.fr"
+           jaxb:version="2.0">
+
+    <!-- IMPORT -->
+    <xs:import namespace="http://model.ws.kybox.fr" schemaLocation="model.xsd"/>
+
+    <!-- ADD ROLE REQUEST -->
+    <xs:element name="AddRoleReq">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="model:Role"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- ADD ROLE RESPONSE -->
+    <xs:element name="AddRoleResp">
+        <xs:complexType>
+            <xs:attribute name="response" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ADD EMPLOYEE REQUEST -->
+    <xs:element name="AddEmployeeReq">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="model:Employee"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- ADD EMPLOYEE RESPONSE -->
+    <xs:element name="AddEmployeeResp">
+        <xs:complexType>
+            <xs:attribute name="response" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- SEARCH EMPLOYEE REQUEST -->
+    <xs:element name="SearchEmployeeReq">
+        <xs:complexType>
+            <xs:attribute name="keyword" type="xs:string" default="all"/>
+        </xs:complexType>
+    </xs:element>
+    <!-- SEARCH EMPLOYEE RESPONSE -->
+    <xs:element name="SearchEmployeeResp">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="model:Employee" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <jaxb:property name="employeeList"/>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- GET ROLE LIST REQUEST -->
+    <xs:element name="GetRoleListReq">
+        <xs:complexType>
+            <xs:attribute name="option" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GetRoleListResp">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="model:Role" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <jaxb:property name="roleList"/>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

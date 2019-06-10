@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:model="http://model.ws.kybox.fr"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:annox="http://annox.dev.java.net"
+           jaxb:extensionBindingPrefixes="annox"
+           targetNamespace="http://model.ws.kybox.fr"
+           jaxb:version="2.0">
+
+    <!-- EMPLOYEE -->
+    <xs:element name="Employee">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:appinfo>
+                    <annox:annotate target="class">
+                        @javax.persistence.Entity
+                    </annox:annotate>
+                    <annox:annotate target="class">
+                        @javax.persistence.Table(name="tb_employee")
+                    </annox:annotate>
+                </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long" minOccurs="0">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="field">
+                                @javax.persistence.Id
+                            </annox:annotate>
+                            <annox:annotate target="field">
+                                @javax.persistence.GeneratedValue(
+                                strategy = javax.persistence.GenerationType.IDENTITY)
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="firstName" type="xs:string">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="field">
+                                @javax.validation.constraints.NotBlank
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="lastName" type="xs:string">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="field">
+                                @javax.validation.constraints.NotBlank
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="model:Role" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <jaxb:property name="roleList"/>
+                            <annox:annotate target="field">
+                                @javax.persistence.ManyToMany(
+                                fetch = javax.persistence.FetchType.EAGER,
+                                targetEntity = Role.class,
+                                cascade = javax.persistence.CascadeType.ALL)
+                            </annox:annotate>
+                            <annox:annotate target="field">
+                                @javax.persistence.JoinTable(
+                                name = "tb_employee_role",
+                                joinColumns = @javax.persistence.JoinColumn(name = "employee_id"),
+                                inverseJoinColumns = @javax.persistence.JoinColumn(name = "role_id"))</annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ROLE -->
+    <xs:element name="Role">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:appinfo>
+                    <annox:annotate target="class">
+                        @javax.persistence.Entity
+                    </annox:annotate>
+                    <annox:annotate target="class">
+                        @javax.persistence.Table(name="tb_role")
+                    </annox:annotate>
+                    <annox:annotate target="class">
+                        @javax.xml.bind.annotation.XmlType
+                        (name="", propOrder={"id", "name"})
+                    </annox:annotate>
+                </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long" minOccurs="0">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="field">
+                                @javax.persistence.Id
+                            </annox:annotate>
+                            <annox:annotate target="field">
+                                @javax.persistence.GeneratedValue(
+                                strategy = javax.persistence.GenerationType.IDENTITY)
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="name" type="xs:string">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <annox:annotate target="field">
+                                @javax.validation.constraints.NotBlank
+                            </annox:annotate>
+                            <annox:annotate target="field">
+                                @javax.persistence.Column(name="role_name", length=50)
+                            </annox:annotate>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="model:Employee" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <jaxb:property name="employeeList"/>
+                            <annox:annotate target="field">
+                                @javax.xml.bind.annotation.XmlTransient
+                            </annox:annotate>
+                            <annox:annotate target="field">
+                                @javax.persistence.ManyToMany(
+                                mappedBy="roleList",
+                                fetch = javax.persistence.FetchType.EAGER,
+                                targetEntity = Employee.class)
+                            </annox:annotate>
+                            <annox:removeAnnotation class="javax.xml.bind.annotation.XmlElement" target="field" />
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

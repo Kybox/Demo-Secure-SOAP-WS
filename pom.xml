@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.4.RELEASE</version>
+        <relativePath/>
+    </parent>
+    <groupId>fr.kybox</groupId>
+    <artifactId>secure-soap-ws</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>secure-soap-ws</name>
+    <description>Secure SOAP WS with Spring Boot</description>
+    <packaging>jar</packaging>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- Spring WS -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web-services</artifactId>
+        </dependency>
+
+        <!-- Spring WS Security -->
+        <dependency>
+            <groupId>org.springframework.ws</groupId>
+            <artifactId>spring-ws-security</artifactId>
+        </dependency>
+
+        <!-- Spring JPA -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- WSDL -->
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+        </dependency>
+
+        <!-- Required for the DefaultURIResolver configuration -->
+        <dependency>
+            <groupId>org.apache.ws.xmlschema</groupId>
+            <artifactId>xmlschema-core</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics</artifactId>
+            <version>1.11.1</version>
+        </dependency>
+
+        <!-- Embedded Database -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- Generate classes -->
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.14.0</version>
+                <configuration>
+
+                    <!-- XSD source directory -->
+                    <schemaDirectory>src/main/resources/xsd</schemaDirectory>
+
+                    <!-- Base generated classes directory -->
+                    <generateDirectory>src/main/java</generateDirectory>
+
+                    <!-- Don't clear package ! -->
+                    <cleanPackageDirectories>false</cleanPackageDirectories>
+
+                    <!-- Provides additional customizations that are not defined by the JAXB specification -->
+                    <extension>true</extension>
+
+                    <!-- Options -->
+                    <noFileHeader>true</noFileHeader>
+                    <locale>us</locale>
+                    <encoding>utf-8</encoding>
+
+                    <!-- Arguments -->
+                    <args>
+
+                        <!-- Generate custom annotations from XSD files -->
+                        <arg>-Xannotate</arg>
+
+                        <!-- Remove default annotation -->
+                        <arg>-XremoveAnnotation</arg>
+
+                        <!-- Add a builder -->
+                        <arg>-Xfluent-api</arg>
+
+                        <!-- Add toString method -->
+                        <!--<arg>-XtoString</arg>-->
+
+                        <!-- Add no args and all parameters constructors -->
+                        <arg>-Xvalue-constructor</arg>
+
+                        <!--
+                            Suppresses the generation of package level annotations
+                            into **/package-info.java.
+                        -->
+                        <arg>-npa</arg>
+                    </args>
+
+                    <!-- Dependencies to generate classes -->
+                    <plugins>
+
+                        <!-- Jaxb2 basics -->
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-basics</artifactId>
+                            <version>1.11.1</version>
+                        </plugin>
+
+                        <!-- Annotation -->
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-basics-annotate</artifactId>
+                            <version>1.1.0</version>
+                        </plugin>
+
+                        <!-- Fluent API (builder) -->
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-fluent-api</artifactId>
+                            <version>3.0</version>
+                        </plugin>
+
+                        <!-- Constructor -->
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-value-constructor</artifactId>
+                            <version>3.0</version>
+                        </plugin>
+
+                        <!-- JPA -->
+                        <plugin>
+                            <groupId>javax.persistence</groupId>
+                            <artifactId>javax.persistence-api</artifactId>
+                            <version>${javax-persistence.version}</version>
+                        </plugin>
+
+                        <!-- Java Bean Validation API -->
+                        <plugin>
+                            <groupId>javax.validation</groupId>
+                            <artifactId>validation-api</artifactId>
+                            <version>${javax-validation.version}</version>
+                        </plugin>
+                    </plugins>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
